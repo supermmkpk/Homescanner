@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myhome.comment.model.mapper.CommentMapper">
+
+	<resultMap type="commentDto" id="comment">
+		<result column="id" property="id" />
+		<result column="content" property="content" />
+		<result column="board_id" property="boardId" />
+		<result column="user_id" property="userId" />
+		<result column="time" property="time" />
+	</resultMap>
+
+	<!-- 글에 대한 댓글 조회 -->
+	<select id="findByBoardId" parameterType="int" resultMap="comment">
+		SELECT *
+		FROM comment
+		WHERE board_id = #{boardId}
+	</select>
+
+	<insert id="insertComment" parameterType="commentDto">
+		INSERT INTO comment(board_id, content, user_id) VALUES(#{boardId},
+		#{content}, #{userId})
+	</insert>
+
+
+	<update id="updateComment" parameterType="commentDto">
+		UPDATE comment SET content = #{content} WHERE id = ${id}
+	</update>
+
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM comment WHERE id = ${id}
+	</delete>
+
+</mapper>

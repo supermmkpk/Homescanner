@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.myhome.notice.model.mapper.NoticeMapper">
+	<resultMap type="noticeDto" id="notice">
+		<result column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="contents" property="contents"/>
+		<result column="reg_id" property="regId"/>
+		<result column="reg_time" property="regTime"/>
+	</resultMap>
+	
+	<!-- 공지 등록 -->
+	<insert id="writeNotice" parameterType="noticeDto">
+		INSERT INTO notices(title, contents, reg_id) 
+		VALUES(#{title}, #{contents}, #{regId})
+	</insert>
+	
+	<!-- 전체 조회 -->
+	<select id="getNotices" parameterType="Integer" resultMap="notice">
+		SELECT *
+		FROM notices
+		ORDER BY reg_time DESC
+		<if test="limit != null">
+		LIMIT ${limit}
+		</if>
+	</select>
+	
+	<!-- 상세 조회 -->
+	<select id="detailNotice" parameterType="int" resultMap="notice">
+		SELECT *
+		FROM notices
+		WHERE id = #{id}
+	</select>
+	
+	<delete id="deleteNotice" parameterType="int">
+		delete
+		FROM notices
+		WHERE id = #{id}
+	</delete>
+	
+	<update id ="modifyNotice" parameterType="noticeDto">
+		UPDATE notices
+		SET title = #{title},
+			contents = #{contents}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

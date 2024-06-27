@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.myhome.member.model.mapper.MemberMapper">
+	<resultMap type="memberDto" id="member">
+		<result column="user_id" property="userId"/>
+		<result column="user_password" property="userPw"/>
+		<result column="user_email" property="userEmail"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_mobile" property="userMobile"/>
+		<result column="user_address" property="userAddress"/>
+		<result column="join_date" property="joinDate"/>
+		<result column="role" property="role"/>
+		<result column="token" property="token"/>
+		<result column="reset_token" property="resetToken"/>
+	</resultMap>
+
+	<!-- 회원가입 -->
+	<insert id="regist" parameterType="memberDto">
+		INSERT INTO members(user_id, user_password, user_email, user_name, user_mobile, user_address, role)
+		VALUES(
+			#{userId},
+			#{userPw},
+			#{userEmail},
+			#{userName},
+			#{userMobile},
+			#{userAddress}
+			<choose>
+				<when test="role == null or role == ''">
+					, 'user')
+				</when>
+				<otherwise>
+					, #{role})
+				</otherwise>
+			</choose>
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="memberDto" resultMap="member">
+		SELECT user_id, user_password, user_name, role
+		FROM members
+		WHERE user_id = #{userId}
+		AND user_password = #{userPw}
+	</select>
+	
+	<!-- 회원 정보 상세 조회 -->
+	<select id="getMemberInfo" parameterType="String" resultMap="member"> 
+		SELECT *
+		FROM members
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- 토큰 갱신(저장) -->
+	<update id="saveRefreshToken" parameterType="Map">
+		UPDATE members
+		SET token = #{token}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- 토큰 조회 -->
+	<select id="getRefreshToken" parameterType="String" resultType="String">
+		SELECT token
+		FROM members
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- 토큰 삭제(NULL로 업데이트) -->
+	<update id="deleteRefreshToken" parameterType="Map">
+		UPDATE members
+		SET token = #{token, jdbcType=VARCHAR}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- 회원 목록 조회(관리자) -->
+	<select id ="listMember" resultMap="member">
+		SELECT user_id, user_email, user_name, user_mobile, user_address
+		FROM members
+	</select>
+	
+	<!-- 회원 삭제(탈퇴) -->
+	<select id ="deleteMember" parameterType="String">
+		DELETE FROM members
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="memberEdit" parameterType="memberDto">
+		UPDATE members 
+		SET user_email = #{userEmail}, 
+			user_name = #{userName}, 
+			user_mobile = #{userMobile}, 
+			user_address = #{userAddress}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- 이메일로 찾기 -->
+	<select id="findByEmail" parameterType="String" resultMap="member">
+        SELECT * 
+        FROM members
+        WHERE user_email = #{userEmail}
+    </select>
+
+	<!-- 재설정 토큰 -->
+    <select id="findByResetToken" parameterType="String" resultMap="member">
+        SELECT *
+        FROM members
+        WHERE reset_token = #{resetToken}
+    </select>
+
+	<!-- 비밀번호 변경 -->
+    <update id="updatePassword" parameterType="memberDto">
+        UPDATE members
+        SET user_password = #{userPw}, reset_token = #{resetToken}
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>

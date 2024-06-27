@@ -1,0 +1,28 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.myhome.school.model.mapper.SchoolMapper">
+
+	<resultMap type="schoolDto" id="school">
+		<result column="school_id" property="schoolId"/>
+		<result column="school_name" property="schoolName"/>
+		<result column="school_level" property="schoolLevel"/>
+		<result column="est_date" property="estDate"/>
+		<result column="est_type" property="estType"/>
+		<result column="main_or_branch" property="mainOrBranch"/>
+		<result column="status" property="status"/>
+		<result column="jibun_address" property="jibunAddress"/>
+		<result column="road_address" property="roadAddress"/>
+		<result column="edu_office_code" property="eduOfficeCode"/>
+		<result column="edu_office_name" property="eduOfficeName"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+	</resultMap>
+	
+	<!-- 법정동으로 학교 조회 -->
+	<select id="listByDong" parameterType="String" resultMap="school">
+		SELECT *
+		FROM school
+		WHERE jibun_address LIKE CONCAT('%' ,#{dong}, '%')
+	</select>
+</mapper>

@@ -1,0 +1,44 @@
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
+import 'chart.js';
+import 'apexcharts';
+import 'echarts';
+import 'simple-datatables';
+import { createPinia } from 'pinia';
+import piniaPersist from 'pinia-plugin-persistedstate';
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import { useKakao } from 'vue3-kakao-maps/@utils';
+import VueCookies from 'vue-cookies';
+import { VueCookieNext } from 'vue-cookie-next';
+import VueSweetalert2 from 'vue-sweetalert2';
+import Vue3Geolocation from 'vue3-geolocation';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
+import 'chart.js';
+import 'quill';
+import 'apexcharts';
+import 'echarts';
+import 'simple-datatables';
+import VueSidebarMenu from 'vue-sidebar-menu';
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
+
+
+const pinia = createPinia();
+pinia.use(piniaPersist);
+const app = createApp(App);
+
+useKakao('5ec0bcc06b04d7840fc4d5fb7f1dcb62');
+app.use(Vue3Geolocation);
+app.use(pinia);
+app.use(VueCookies);
+app.$cookies.config('7d');
+app.use(VueCookieNext);
+app.use(router);
+app.use(VueSweetalert2);
+app.use(VueSidebarMenu);
+app.mount('#app');

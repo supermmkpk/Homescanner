@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.myhome.homelikes.model.mapper.HomeLikesMapper">
+	<resultMap type="homeLikesDto" id="homeLike">
+		<result column="like_id" property="likeId" />
+		<result column="user_id" property="userId" />
+		<result column="aptCode" property="aptCode" />
+	</resultMap>
+	
+	<resultMap type="Map" id="nameMap">
+		<result column="user_id" property="userId" />
+		<result column="apartmentName" property="apartmentName" />
+	</resultMap>
+
+	<!-- 좋아요 등록 -->
+	<insert id="insert" parameterType="homeLikesDto">
+		INSERT INTO
+		home_likes(user_id, aptCode)
+		VALUES(#{userId}, #{aptCode})
+	</insert>
+
+	<!-- 전체 조회 -->
+	<select id="list" parameterType="String" resultMap="nameMap">
+		SELECT b.aptCode, b.apartmentName
+		FROM home_likes a, houseinfo b
+		WHERE a.aptCode = b.aptCode
+		AND a.user_id = #{userId}
+	</select>
+	
+	<!-- 좋아요 여부 -->
+	<select id="isLiked" parameterType="HomeLikesDto" resultMap="homeLike">
+		SELECT *
+		FROM home_likes
+		WHERE aptCode = #{aptCode}
+		AND user_id = #{userId}
+	</select>
+
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="HomeLikesDto">
+		DELETE FROM home_likes
+		WHERE
+		aptCode = #{aptCode}
+		AND user_id = #{userId}
+	</delete>
+
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.myhome.homelikes.model.mapper.HomeLikesMapper">
+	<resultMap type="homeLikesDto" id="homeLike">
+		<result column="like_id" property="likeId"/>
+		<result column="deal_amount" property="dealAmount"/>
+		<result column="build_year" property="buildYear"/>
+		<result column="deal_year" property="dealYear"/>
+		<result column="deal_month" property="dealMonth"/>
+		<result column="deal_day" property="dealDay"/>
+		<result column="road_name" property="roadName"/>
+		<result column="dong" property="dong"/>
+		<result column="apartment_name" property="apartmentName"/>
+		<result column="exclusive_area" property="exclusiveArea"/>
+		<result column="jibun" property="jibun"/>
+		<result column="floor" property="floor"/>
+		<result column="dealer_location" property="dealerLocation"/>
+		<result column="registration_date" property="registrationDate"/>
+		<result column="address" property="address"/>
+		<result column="user_id" property="userId"/>
+	</resultMap>
+
+	<!-- 관심 주택 등록  -->
+	<insert id="insert" parameterType="homeLikesDto">
+		INSERT INTO home_likes
+		VALUES(
+			NULL,
+			#{dealAmount},
+			#{buildYear},
+			#{dealYear},
+			#{dealMonth},
+			#{dealDay},
+			#{roadName},
+			#{dong},
+			#{apartmentName},
+			#{exclusiveArea},
+			#{jibun},
+			#{floor},
+			#{dealerLocation},
+			#{registrationDate},
+			#{address},
+			#{userId})
+	</insert>
+	
+	<!-- 전체 조회 -->
+	<select id="list" parameterType="String" resultMap="homeLike">
+		SELECT *
+		FROM home_likes
+		WHERE user_id = #{userId}
+		ORDER BY like_id
+	</select>
+	
+	<!-- 상세조회 -->
+	<select id="get" parameterType="int" resultMap="homeLike">
+		SELECT *
+		FROM home_likes
+		WHERE like_id = #{likeId}
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM home_likes
+		WHERE like_id = #{likeId}
+	</delete>
+			
+</mapper>

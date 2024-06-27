@@ -1,0 +1,21 @@
+diff a/WhereIsMyHome_API/src/main/java/com/myhome/config/WebMvcConfiguration.java b/WhereIsMyHome_API/src/main/java/com/myhome/config/WebMvcConfiguration.java	(rejected hunks)
+@@ -43,12 +43,17 @@
+ 
+ 	@Override
+ 	public void addCorsMappings(CorsRegistry registry) {
+-		registry.addMapping("/**").allowedOrigins("*")
++		registry.addMapping("/**")
++		.allowedOrigins("*") 
+ 			.allowedOrigins("http://localhost:8080", "http://localhost:8081")
++//		.allowedOriginPatterns("*")
+ 				.allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
+ 						HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
+ 						HttpMethod.PATCH.name())
+-				.maxAge(1800); // 1800초 동안 preflight 결과를 캐시에 저장
++				.allowedHeaders("*")
++//				.allowCredentials(true)
++				.exposedHeaders("Authorization")
++				.maxAge(3600); // 1800초 동안 preflight 결과를 캐시에 저장
+ 	}
+ 
+ 	@Override

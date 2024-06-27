@@ -1,0 +1,59 @@
+:root {
+  --main-color: #1f94ed;
+}
+main {
+    margin-top: 80px;
+    margin-bottom: 100px;
+    min-height: calc(100vh - 17rem);
+}
+.loginButton {
+  border: 1px lightgray solid;
+}
+.loginButton:hover {
+  color: black;
+  background-color: #f8f9fa;
+}
+.main-color {
+  color: var(--main-color);
+}
+.btn-success {
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+.custom-btn-primary {
+  color: var(--main-color);
+  border-color: var(--main-color);
+  --bs-btn-active-bg: white;
+  --bs-btn-active-color: var(--main-color);
+  --bs-btn-active-border-color: var(--main-color);
+}
+.custom-btn-primary:hover {
+  color: var(--main-color);
+  background-color: white;
+  border-color: var(--main-color);
+}
+
+.carousel-item img {
+  width: 500px; /* 원하는 가로 크기로 조절 */
+  height: 400px; /* 원하는 세로 크기로 조절 */
+  object-fit: contain; /* 이미지 비율을 유지하면서 부모 요소에 꽉 차도록 조절 */
+}
+.navbar-brand:hover {
+  color: var(--main-color);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: fill;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon,
+.carousel-indicators {
+  filter: invert(100%);
+}
+
+footer {
+  margin-top: 100px;
+  height: 17rem;
+}

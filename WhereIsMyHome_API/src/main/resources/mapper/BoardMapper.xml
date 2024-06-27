@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.myhome.board.model.mapper.BoardMapper">
+
+	<resultMap type="boardDto" id="board">
+		<result column="board_id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="contents" property="content"/>
+		<result column="user_id" property="userId"/>
+		<result column="time" property="time"/>
+		<result column="viewCnt" property="viewCnt"/>
+	</resultMap>
+
+	<!-- 전체글 조회 -->
+	<select id="selectAll" resultMap="board">
+		SELECT *
+		FROM board;
+	</select>
+
+	<!-- 상세글 조회 -->
+	<select id="selectOne" parameterType="int" resultMap="board">
+		SELECT *
+		FROM board
+		WHERE board_id = #{id};
+	</select>
+
+	<!-- 게시글 등록 -->
+	<insert id="insertBoard" parameterType="boardDto">
+		INSERT INTO board (title, contents, user_id)
+		VALUES (#{title}, #{content}, #{userId})
+	</insert>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM board
+		WHERE board_id = #{id}
+	</delete>
+
+	<!-- 게시글 수정 -->
+	<update id="updateBoard" parameterType="boardDto">
+		UPDATE board
+		SET title = #{title}, contents = #{content}
+		WHERE board_id = #{id}
+	</update>
+
+	<!-- 게시글 조회수 증가 -->
+	<update id="updateViewCnt" parameterType="int"> 
+		UPDATE board
+		SET viewCnt = viewCnt + 1 
+		WHERE board_id = #{id}
+	</update>
+
+	<!-- 게시글 검색 -->
+	<select id="searchBoard" parameterType="SearchConditionBoard"
+		resultMap="board">
+		SELECT * FROM board
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="title != null and title != ''">
+				AND title LIKE concat('%', #{title}, '%')
+			</if>
+			<if test="content != null and content != ''"> 
+				AND content LIKE concat('%', #{content}, '%')
+			</if>
+		</trim>
+		<if test="order != null and order != ''">
+			ORDER BY ${order} ${direction}
+		</if>
+	</select>
+</mapper>
